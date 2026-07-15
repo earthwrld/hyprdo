@@ -27,9 +27,9 @@ HyprDo memiliki **3 screen / view utama**:
 
 ## 3. Main Window
 
-### 3.1 Mockup
+### 3.1 Mockup (v2 — revised palette)
 
-![HyprDo Main Window](hyprdo_main_window.jpg)
+![HyprDo Main Window v2](hyprdo_main_window_v2.jpg)
 
 ### 3.2 Spesifikasi
 
@@ -234,22 +234,29 @@ Dialog yang sama digunakan untuk edit task:
 
 ## 6. Theme System
 
-### 6.1 Color Variables (CSS-like naming)
+### 6.1 Color Variables (Final Palette — from ui-ux-pro-max audit)
 
-| Variable | Deskripsi |
-|---|---|
-| `--bg-primary` | Background utama window |
-| `--bg-card` | Background task card |
-| `--bg-card-hover` | Background task card on hover |
-| `--accent` | Warna utama (tombol, highlight) |
-| `--accent-dim` | Accent lebih redup (secondary elements) |
-| `--text-primary` | Teks utama |
-| `--text-secondary` | Teks sekunder (deadline, count) |
-| `--text-done` | Teks task selesai |
-| `--border` | Border card |
-| `--priority-high` | Warna dot High (#ff5555 atau dari theme) |
-| `--priority-medium` | Warna dot Medium (#ffb86c) |
-| `--priority-low` | Warna dot Low (#50fa7b) |
+> **Source**: Studio Dark palette — deep navy + violet + green. Validated for WCAG AA contrast.
+
+| Variable | Value | Deskripsi |
+|---|---|---|
+| `--bg-primary` | `#0F172A` | Background utama window (deep navy) |
+| `--bg-card` | `#192134` | Background task card |
+| `--bg-card-hover` | `#1E2A40` | Background task card on hover |
+| `--accent` | `#7C3AED` | Violet — tombol utama, active filter |
+| `--accent-dim` | `#6366F1` | Indigo — secondary elements |
+| `--accent-green` | `#22C55E` | Green — done state, progress bar |
+| `--text-primary` | `#FFFFFF` | Teks utama |
+| `--text-secondary` | `#94A3B8` | Teks sekunder (deadline, count) |
+| `--text-done` | `#64748B` | Teks task selesai (strikethrough) |
+| `--border` | `rgba(255,255,255,0.06)` | Border card |
+| `--priority-high` | `#EF4444` | Dot High (red) |
+| `--priority-medium` | `#EAB308` | Dot Medium (yellow) |
+| `--priority-low` | `#22C55E` | Dot Low (green) |
+| `--badge-today` | `#F97316` | Badge "due today" (orange) |
+| `--badge-tomorrow` | `#EAB308` | Badge "tomorrow" (yellow) |
+| `--badge-overdue` | `#EF4444` | Badge "overdue!" (red) |
+| `--destructive` | `#DC2626` | Delete/destructive actions |
 
 ### 6.2 Auto-detect Logic (`theme.py`)
 
@@ -273,14 +280,30 @@ def load_theme() -> dict:
 
 ```python
 BUILTIN_DARK_THEME = {
-    "bg_primary":    "#1a1033",
-    "bg_card":       "#231645",
-    "accent":        "#bd93f9",
-    "text_primary":  "#f8f8f2",
-    "text_secondary":"#6272a4",
-    "priority_high": "#ff5555",
-    "priority_mid":  "#ffb86c",
-    "priority_low":  "#50fa7b",
+    # Background
+    "bg_primary":      "#0F172A",  # deep navy
+    "bg_card":         "#192134",
+    "bg_card_hover":   "#1E2A40",
+    # Accent
+    "accent":          "#7C3AED",  # violet
+    "accent_dim":      "#6366F1",  # indigo
+    "accent_green":    "#22C55E",  # green (done/progress)
+    # Text
+    "text_primary":    "#FFFFFF",
+    "text_secondary":  "#94A3B8",
+    "text_done":       "#64748B",
+    # Border
+    "border":          "rgba(255,255,255,0.06)",
+    # Priority dots
+    "priority_high":   "#EF4444",
+    "priority_medium": "#EAB308",
+    "priority_low":    "#22C55E",
+    # Deadline badges
+    "badge_today":     "#F97316",
+    "badge_tomorrow":  "#EAB308",
+    "badge_overdue":   "#EF4444",
+    # Destructive
+    "destructive":     "#DC2626",
 }
 ```
 
@@ -302,7 +325,7 @@ BUILTIN_DARK_THEME = {
 
 | Shortcut | Aksi |
 |---|---|
-| `Super + T` | Toggle window (via Hyprland) |
+| `Super + D` | Toggle window (via Hyprland) — **Super+T sudah dipakai terminal** |
 | `Ctrl + N` | Buka Add Task dialog |
 | `Escape` | Tutup dialog / tutup window |
 | `Enter` | Dalam dialog: tambah subtask baru |
