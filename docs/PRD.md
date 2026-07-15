@@ -1,6 +1,6 @@
 # HyprDo — Product Requirements Document (PRD)
 
-> **Version**: 0.1.0-draft  
+> **Version**: 0.2.0-draft  
 > **Author**: boemi  
 > **Created**: 2026-07-15  
 > **Status**: Draft
@@ -23,6 +23,7 @@ Pengguna Hyprland yang produktif tidak memiliki to-do list yang:
 - **Toggle show/hide** seamlessly dari Waybar atau keyboard shortcut
 - **Theme-aware** — mengikuti color scheme pywal/HyDE secara otomatis
 - **Full-featured** tapi tetap ringan dan non-bloat
+- **Bisa dikontrol via CLI** — sehingga AI agent (AGY/Claude) bisa add task langsung dari terminal
 
 Alternatif yang ada:
 | App | Masalah |
@@ -43,6 +44,7 @@ Alternatif yang ada:
 - Theme-aware menggunakan pywal color scheme
 - Full-featured: priority, deadline, notifikasi, subtask
 - Data tersimpan lokal (SQLite)
+- **CLI interface** — bisa dipakai dari terminal maupun oleh AI agent (AGY/Claude)
 - Dapat di-share / didistribusikan ke pengguna Hyprland lain
 
 ### Non-Goals ❌
@@ -117,6 +119,41 @@ Alternatif yang ada:
 - Animasi: fade in/out saat toggle
 - Modern glassmorphism look
 
+### 5.5 CLI Interface (AI Agent Integration)
+
+HyprDo menyediakan CLI sehingga AI agent (AGY CLI, Claude Code) bisa mengontrol app langsung dari terminal.
+
+```bash
+# Tambah task baru
+hyprdo add "judul task" --priority high --deadline "2026-07-20"
+hyprdo add "belajar GTK4" --priority medium
+
+# Lihat semua task pending
+hyprdo list
+hyprdo list --priority high
+hyprdo list --format json
+
+# Mark selesai
+hyprdo done <id>
+
+# Hapus task
+hyprdo delete <id>
+
+# Toggle window
+hyprdo show
+hyprdo hide
+hyprdo toggle
+
+# Output JSON untuk Waybar
+hyprdo status
+# → {"text": "󰄲 5", "tooltip": "High: fix login bug", "class": "has-tasks"}
+```
+
+**Contoh penggunaan dengan AGY:**
+> _"AGY, tambah task: pelajari GTK4 dengan priority medium deadline minggu depan"_
+> → AGY menjalankan: `hyprdo add "pelajari GTK4" --priority medium --deadline "2026-07-22"`
+> → Task langsung muncul di app ✅
+
 ---
 
 ## 6. Technical Requirements
@@ -127,9 +164,10 @@ Alternatif yang ada:
 | Language | Python 3.11+ |
 | UI Framework | GTK4 + libadwaita |
 | Database | SQLite (via `sqlite3` stdlib) |
+| CLI | `argparse` (stdlib) atau `typer` |
 | Notification | `libnotify` / `notify-send` |
 | Theme | pywal (`~/.cache/wal/colors.json`) |
-| Waybar | Custom `custom/` module (JSON output) |
+| Waybar | Custom `custom/` module (`hyprdo status`) |
 | Packaging | (future) AUR package / install script |
 
 ### File Structure (planned)
@@ -142,8 +180,9 @@ hyprdo/
 ├── src/
 │   ├── hyprdo/
 │   │   ├── __init__.py
-│   │   ├── main.py         ← entry point
-│   │   ├── database.py     ← SQLite layer
+│   │   ├── main.py         ← entry point (GUI)
+│   │   ├── cli.py          ← CLI entry point (argparse/typer)
+│   │   ├── database.py     ← SQLite layer (shared oleh GUI & CLI)
 │   │   ├── models.py       ← data models
 │   │   ├── ui/
 │   │   │   ├── window.py   ← main window
@@ -152,14 +191,13 @@ hyprdo/
 │   │   ├── notifier.py     ← libnotify integration
 │   │   └── theme.py        ← pywal color reader
 ├── waybar/
-│   ├── hyprdo.sh       ← Waybar module script
 │   └── hyprdo.json     ← Waybar module config snippet
 ├── hyprland/
 │   └── hyprdo.conf     ← Hyprland keybind + window rules
 ├── assets/
 │   └── icons/
 ├── README.md
-└── pyproject.toml
+└── pyproject.toml      ← scripts: hyprdo = hyprdo.cli:main
 ```
 
 ---
@@ -179,6 +217,10 @@ hyprdo/
 | US-09 | Sebagai user, tampilan app mengikuti color scheme wallpaper saya (pywal) | Medium |
 | US-10 | Sebagai user, saya bisa filter task berdasarkan label/kategori | Medium |
 | US-11 | Sebagai user, saya bisa sort task berdasarkan priority/deadline | Medium |
+| US-12 | Sebagai user (atau AGY), saya bisa `hyprdo add` task dari terminal | High |
+| US-13 | Sebagai user (atau AGY), saya bisa `hyprdo list` untuk lihat task pending | High |
+| US-14 | Sebagai user (atau AGY), saya bisa `hyprdo done <id>` untuk mark selesai | High |
+| US-15 | Sebagai user, `hyprdo status` output JSON yang bisa dibaca Waybar | High |
 
 ---
 
@@ -187,11 +229,13 @@ hyprdo/
 | Milestone | Deliverables | Status |
 |---|---|---|
 | M0 — Setup | Repo init, PRD, ERD, Wireframe | 🔄 In Progress |
-| M1 — Core | Database layer, basic CRUD UI | ⏳ Pending |
-| M2 — Features | Priority, deadline, subtask, notif | ⏳ Pending |
-| M3 — Integration | Waybar module, Hyprland scratchpad, hotkey | ⏳ Pending |
-| M4 — Polish | Theming pywal, animasi, packaging | ⏳ Pending |
-| M5 — Release | README lengkap, install script, distribusi | ⏳ Pending |
+| M1 — Core | Database layer, models, basic CRUD | ⏳ Pending |
+| M2 — CLI | CLI interface (`add`, `list`, `done`, `delete`, `status`) | ⏳ Pending |
+| M3 — GUI | GTK4 window, task list, add/edit dialog | ⏳ Pending |
+| M4 — Features | Priority, deadline, subtask, notifikasi | ⏳ Pending |
+| M5 — Integration | Waybar module, Hyprland scratchpad, hotkey | ⏳ Pending |
+| M6 — Polish | pywal theming, animasi, packaging | ⏳ Pending |
+| M7 — Release | README lengkap, install script, distribusi | ⏳ Pending |
 
 ---
 
