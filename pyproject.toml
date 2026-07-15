@@ -21,7 +21,6 @@ classifiers = [
     "Topic :: Office/Business :: Scheduling",
 ]
 dependencies = [
-    "typer>=0.12",
     "PyGObject>=3.48",
 ]
 
