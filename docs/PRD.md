@@ -21,7 +21,7 @@
 Pengguna Hyprland yang produktif tidak memiliki to-do list yang:
 - **Terintegrasi native** dengan Waybar (bukan web app, bukan Electron)
 - **Toggle show/hide** seamlessly dari Waybar atau keyboard shortcut
-- **Theme-aware** — mengikuti color scheme **HyDE dcols** (dan pywal sebagai fallback) secara otomatis
+- **Theme-aware** — auto-detect color scheme: HyDE dcols, pywal, atau built-in dark (universal, bukan HyDE-only)
 - **Full-featured** tapi tetap ringan dan non-bloat
 - **Bisa dikontrol via CLI** — sehingga AI agent (AGY/Claude) bisa add task langsung dari terminal
 
@@ -41,7 +41,7 @@ Alternatif yang ada:
 - Aplikasi GTK4 native yang ringan dan cepat
 - Integrasi penuh dengan Waybar sebagai custom module
 - Toggle via klik icon Waybar dan keyboard shortcut Hyprland
-- Theme-aware menggunakan HyDE dcols color scheme (fallback: pywal / built-in dark)
+- Theme-aware dengan **auto-detection**: HyDE dcols → pywal → built-in dark (works untuk semua Hyprland user)
 - Full-featured: priority, deadline, notifikasi, subtask
 - Data tersimpan lokal (SQLite)
 - **CLI interface** — bisa dipakai dari terminal maupun oleh AI agent (AGY/Claude)
@@ -114,9 +114,11 @@ Alternatif yang ada:
 
 ### 5.4 Theme / Appearance
 
-- **HyDE-aware** (primary): baca file `~/.cache/hyde/dcols/<hash>.dcol` untuk color scheme aktif
-- **pywal-aware** (fallback): baca `~/.cache/wal/colors.json` jika HyDE tidak ada
-- Fallback akhir: built-in dark theme jika keduanya tidak ada
+- **Auto-detect theme** dengan urutan prioritas:
+  1. **HyDE dcols** (primary): `~/.cache/hyde/dcols/<hash>.dcol` — untuk HyDE users
+  2. **pywal** (fallback): `~/.cache/wal/colors.json` — untuk non-HyDE Hyprland users
+  3. **Built-in dark theme** (fallback akhir): hardcoded palette yang tetap keren
+- App bisa dipakai oleh **semua pengguna Hyprland**, tidak harus pakai HyDE
 - Animasi: fade in/out saat toggle
 - Modern glassmorphism look
 
@@ -167,7 +169,7 @@ hyprdo status
 | Database | SQLite (via `sqlite3` stdlib) |
 | CLI | `argparse` (stdlib) atau `typer` |
 | Notification | `libnotify` / `notify-send` |
-| Theme | HyDE dcols (`~/.cache/hyde/dcols/`) / pywal fallback |
+| Theme | Auto-detect: HyDE dcols → pywal → built-in dark |
 | Waybar | Custom `custom/` module (`hyprdo status`) |
 | Packaging | (future) AUR package / install script |
 
@@ -215,7 +217,7 @@ hyprdo/
 | US-06 | Sebagai user, saya bisa set deadline tanggal + waktu untuk task | High |
 | US-07 | Sebagai user, saya bisa menambah subtask ke dalam sebuah task | High |
 | US-08 | Sebagai user, saya mendapat notifikasi desktop sebelum deadline | High |
-| US-09 | Sebagai user, tampilan app mengikuti color scheme HyDE/wallpaper saya (dcols/pywal) | Medium |
+| US-09 | Sebagai user, tampilan app mengikuti color scheme sistem saya (HyDE/pywal/built-in) otomatis | Medium |
 | US-10 | Sebagai user, saya bisa filter task berdasarkan label/kategori | Medium |
 | US-11 | Sebagai user, saya bisa sort task berdasarkan priority/deadline | Medium |
 | US-12 | Sebagai user (atau AGY), saya bisa `hyprdo add` task dari terminal | High |
