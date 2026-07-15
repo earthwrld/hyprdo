@@ -21,7 +21,7 @@
 Pengguna Hyprland yang produktif tidak memiliki to-do list yang:
 - **Terintegrasi native** dengan Waybar (bukan web app, bukan Electron)
 - **Toggle show/hide** seamlessly dari Waybar atau keyboard shortcut
-- **Theme-aware** — mengikuti color scheme pywal/HyDE secara otomatis
+- **Theme-aware** — mengikuti color scheme **HyDE dcols** (dan pywal sebagai fallback) secara otomatis
 - **Full-featured** tapi tetap ringan dan non-bloat
 - **Bisa dikontrol via CLI** — sehingga AI agent (AGY/Claude) bisa add task langsung dari terminal
 
@@ -41,7 +41,7 @@ Alternatif yang ada:
 - Aplikasi GTK4 native yang ringan dan cepat
 - Integrasi penuh dengan Waybar sebagai custom module
 - Toggle via klik icon Waybar dan keyboard shortcut Hyprland
-- Theme-aware menggunakan pywal color scheme
+- Theme-aware menggunakan HyDE dcols color scheme (fallback: pywal / built-in dark)
 - Full-featured: priority, deadline, notifikasi, subtask
 - Data tersimpan lokal (SQLite)
 - **CLI interface** — bisa dipakai dari terminal maupun oleh AI agent (AGY/Claude)
@@ -114,8 +114,9 @@ Alternatif yang ada:
 
 ### 5.4 Theme / Appearance
 
-- **pywal-aware**: baca file `~/.cache/wal/colors.json` untuk color scheme
-- Fallback: built-in dark theme jika pywal tidak ada
+- **HyDE-aware** (primary): baca file `~/.cache/hyde/dcols/<hash>.dcol` untuk color scheme aktif
+- **pywal-aware** (fallback): baca `~/.cache/wal/colors.json` jika HyDE tidak ada
+- Fallback akhir: built-in dark theme jika keduanya tidak ada
 - Animasi: fade in/out saat toggle
 - Modern glassmorphism look
 
@@ -166,7 +167,7 @@ hyprdo status
 | Database | SQLite (via `sqlite3` stdlib) |
 | CLI | `argparse` (stdlib) atau `typer` |
 | Notification | `libnotify` / `notify-send` |
-| Theme | pywal (`~/.cache/wal/colors.json`) |
+| Theme | HyDE dcols (`~/.cache/hyde/dcols/`) / pywal fallback |
 | Waybar | Custom `custom/` module (`hyprdo status`) |
 | Packaging | (future) AUR package / install script |
 
@@ -189,7 +190,7 @@ hyprdo/
 │   │   │   ├── task_row.py ← task list item widget
 │   │   │   └── dialogs.py  ← add/edit task dialog
 │   │   ├── notifier.py     ← libnotify integration
-│   │   └── theme.py        ← pywal color reader
+│   │   └── theme.py        ← HyDE dcols / pywal color reader
 ├── waybar/
 │   └── hyprdo.json     ← Waybar module config snippet
 ├── hyprland/
@@ -214,7 +215,7 @@ hyprdo/
 | US-06 | Sebagai user, saya bisa set deadline tanggal + waktu untuk task | High |
 | US-07 | Sebagai user, saya bisa menambah subtask ke dalam sebuah task | High |
 | US-08 | Sebagai user, saya mendapat notifikasi desktop sebelum deadline | High |
-| US-09 | Sebagai user, tampilan app mengikuti color scheme wallpaper saya (pywal) | Medium |
+| US-09 | Sebagai user, tampilan app mengikuti color scheme HyDE/wallpaper saya (dcols/pywal) | Medium |
 | US-10 | Sebagai user, saya bisa filter task berdasarkan label/kategori | Medium |
 | US-11 | Sebagai user, saya bisa sort task berdasarkan priority/deadline | Medium |
 | US-12 | Sebagai user (atau AGY), saya bisa `hyprdo add` task dari terminal | High |
@@ -234,7 +235,7 @@ hyprdo/
 | M3 — GUI | GTK4 window, task list, add/edit dialog | ⏳ Pending |
 | M4 — Features | Priority, deadline, subtask, notifikasi | ⏳ Pending |
 | M5 — Integration | Waybar module, Hyprland scratchpad, hotkey | ⏳ Pending |
-| M6 — Polish | pywal theming, animasi, packaging | ⏳ Pending |
+| M6 — Polish | HyDE dcols theming, animasi, packaging | ⏳ Pending |
 | M7 — Release | README lengkap, install script, distribusi | ⏳ Pending |
 
 ---
@@ -243,5 +244,6 @@ hyprdo/
 
 - [WeekToDo](https://github.com/manuelernestog/weektodo) — minimalis, privacy-first, open source weekly planner
 - [HyDE](https://github.com/HyDE-Project/HyDE) — Hyprland dotfiles framework
-- [pywal](https://github.com/dylanaraps/pywal) — color scheme dari wallpaper
+- [HyDE dcols](https://github.com/HyDE-Project/HyDE) — wallpaper-based color palette system yang dipakai di setup ini
+- [pywal](https://github.com/dylanaraps/pywal) — color scheme dari wallpaper (fallback)
 - [Waybar docs](https://github.com/Alexays/Waybar/wiki) — custom module integration
