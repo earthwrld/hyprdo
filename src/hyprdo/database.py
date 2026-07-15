@@ -215,7 +215,7 @@ def create_task(
         # Auto-create reminders if deadline set
         cfg = get_config()
         if deadline:
-            _create_reminders_for_task(conn, task_id, deadline, cfg.app.remind_before_minutes)
+            _create_reminders_for_task(conn, task_id, deadline, cfg["remind_before_minutes"])
 
         row = conn.execute("SELECT * FROM tasks WHERE id = ?", (task_id,)).fetchone()
         return _row_to_task(row)
