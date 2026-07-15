@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "hyprdo"
@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "A native GTK4 to-do list app for Hyprland — theme-aware, Waybar integrated"
 readme = "README.md"
 license = { text = "MIT" }
-authors = [{ name = "boemi", email = "" }]
+authors = [{ name = "boemi" }]
 requires-python = ">=3.11"
 keywords = ["hyprland", "waybar", "gtk4", "todo", "linux", "wayland"]
 classifiers = [
