@@ -34,6 +34,7 @@ dev = [
 [project.scripts]
 hyprdo        = "hyprdo.cli:main"
 hyprdo-gui    = "hyprdo.main:main"
+hyprdo-toggle = "hyprdo.toggle:main"
 hyprdo-daemon = "hyprdo.daemon:main"
 
 [tool.setuptools.packages.find]
