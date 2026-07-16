@@ -32,8 +32,9 @@ dev = [
 ]
 
 [project.scripts]
-hyprdo     = "hyprdo.cli:main"
-hyprdo-gui = "hyprdo.main:main"
+hyprdo        = "hyprdo.cli:main"
+hyprdo-gui    = "hyprdo.main:main"
+hyprdo-daemon = "hyprdo.daemon:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
