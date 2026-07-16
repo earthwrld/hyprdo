@@ -47,6 +47,12 @@ class TaskRow(Gtk.ListBoxRow):
         row.append(self._priority_dot())
         row.append(self._title_label())
         row.append(Gtk.Box(hexpand=True))  # spacer
+        
+        for label in self._task.labels:
+            lbl = Gtk.Label(label=f" {label.name} ", css_classes=["label-pill"])
+            # Apply dynamic color via CSS later, for now just use the class
+            row.append(lbl)
+            
         row.append(self._deadline_badge())
         if self._task.subtasks:
             row.append(self._expand_button())
@@ -129,6 +135,7 @@ class TaskRow(Gtk.ListBoxRow):
             fraction=self._task.subtask_progress,
             css_classes=["progress-bar"],
         )
+        bar.set_show_text(True)
         bar.set_margin_top(4)
         return bar
 

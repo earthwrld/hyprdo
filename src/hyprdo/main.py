@@ -24,14 +24,20 @@ class HyprDoApp(Adw.Application):
     def __init__(self) -> None:
         super().__init__(
             application_id="io.github.earthwrld.hyprdo",
-            flags=Gio.ApplicationFlags.NON_UNIQUE,
+            flags=Gio.ApplicationFlags.FLAGS_NONE,
         )
+        self.win = None
 
     def do_activate(self) -> None:
-        db.init_db()
-        win = HyprDoWindow(app=self)
-        self._apply_theme(win)
-        win.present()
+        if self.win is None:
+            db.init_db()
+            self.win = HyprDoWindow(app=self)
+            self._apply_theme(self.win)
+        
+        if self.win.get_visible():
+            self.win.set_visible(False)
+        else:
+            self.win.present()
 
     def _apply_theme(self, win: Gtk.Window) -> None:
         css      = build_css(load_theme())

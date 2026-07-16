@@ -131,16 +131,9 @@ def _connect(db_path: Optional[Path] = None) -> Generator[sqlite3.Connection, No
 
 
 def init_db(db_path: Optional[Path] = None) -> None:
-    """Create tables and seed default labels if DB is new."""
+    """Create tables."""
     with _connect(db_path) as conn:
         conn.executescript(_SCHEMA)
-        # Seed default labels only if table is empty
-        count = conn.execute("SELECT COUNT(*) FROM labels").fetchone()[0]
-        if count == 0:
-            conn.executemany(
-                "INSERT INTO labels (name, color) VALUES (?, ?)",
-                _DEFAULT_LABELS,
-            )
 
 
 # ---------------------------------------------------------------------------

@@ -98,6 +98,19 @@ window {{
 }}
 
 .badge-today    {{ background-color: #{t["badge_today"]};    color: white; }}
+
+.label-pill {{
+    background-color: alpha(#{t["text_primary"]}, 0.08);
+    color: #{t["text_primary"]};
+    border-radius: 99px;
+    padding: 2px 10px;
+    font-size: 11px;
+    font-weight: 500;
+}}
+.label-pill:checked {{
+    background-color: #{t["accent"]};
+    color: white;
+}}
 .badge-tomorrow {{ background-color: #{t["badge_tomorrow"]};  color: black; }}
 .badge-overdue  {{ background-color: #{t["badge_overdue"]};   color: white; }}
 
@@ -148,7 +161,7 @@ window {{
 .subtask-row {{
     font-size: 13px;
     padding: 2px 0;
-    color: #{t["text_secondary"]};
+    color: #{t["text_primary"]};
 }}
 
 .priority-pill {{
